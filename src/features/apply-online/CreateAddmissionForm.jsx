@@ -36,6 +36,10 @@ const FormRow = styled.div`
     justify-content: flex-end;
     gap: 1.2rem;
   }
+  @media only screen and (max-width: 576px) {
+    grid-template-columns: 18rem 2fr 1fr;
+    gap: 1.5rem;
+  }
 `;
 
 const Label = styled.label`
@@ -48,7 +52,7 @@ const Label = styled.label`
 // `;
 
 const Error = styled.span`
-  font-size: 1.4rem;
+  font-size: 1rem;
   color: var(--color-red-700);
 `;
 
@@ -96,11 +100,11 @@ function CreateAddmissionForm() {
       }
     );
   }
-  function onError(errors) {
-    console.log("errors", errors);
-  }
+  // function onError(errors) {
+  //   console.log("errors", errors);
+  // }
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)} type="regular">
+    <Form onSubmit={handleSubmit(onSubmit)} type="regular">
       <Heading type="h3">Candidate Information</Heading>
       <FormRow>
         <Label htmlFor="cnic">CNIC of Candidate</Label>

@@ -9,7 +9,10 @@ const StyledSideBar = styled.aside`
   grid-row: 1 / -1;
   border-right: 1px solid var(--color-grey-100);
   padding: 2.5rem;
-  /* visibility: hidden; */
+
+  @media only screen and (max-width: 576px) {
+    display: none;
+  }
 `;
 export default function SideBar() {
   return (

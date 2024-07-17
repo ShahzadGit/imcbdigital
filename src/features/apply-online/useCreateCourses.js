@@ -8,9 +8,9 @@ export function useCreateCourses() {
     mutationFn: createCoursesApi,
 
     onSuccess: () => {
-      toast.success("Application submitted Successfully!");
+      toast.success("Data is being submitted. Pleas wait...!");
       queryClient.invalidateQueries({
-        queryKey: ["courses"],
+        queryKey: ["courses_applied"],
       });
       // reset(); onSuccess is also used in function from where it has been called
     },

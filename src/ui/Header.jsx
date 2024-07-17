@@ -11,6 +11,9 @@ const StyledHeader = styled.header`
   gap: 2.4rem;
   align-items: center;
   justify-content: flex-end;
+  @media only screen and (max-width: 576px) {
+    justify-content: space-between;
+  }
 `;
 export default function Header() {
   return (

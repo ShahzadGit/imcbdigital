@@ -10,7 +10,7 @@ export function useCoursesApplied() {
     data: courses_applied = {}, //It will set it to an empty object to avoid the undefined error.
     count,
   } = useQuery({
-    queryKey: ["courses_applied", studentId],
+    queryKey: ["courses_applied"],
     queryFn: () => getCoursesApplied(studentId),
     retry: false,
   });

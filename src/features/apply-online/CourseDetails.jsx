@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useCreateCourses } from "./useCreateCourses";
 import { useCoursesApplied } from "../dashboard/useCoursesApplied";
 import Spinner from "../../ui/Spinner";
+import { useForm } from "react-hook-form";
 
 const FormRow = styled.div`
   display: grid;
@@ -33,6 +34,15 @@ const FormRow = styled.div`
     justify-content: flex-end;
     gap: 1.2rem;
   }
+`;
+
+const Label = styled.label`
+  font-weight: 500;
+`;
+
+const Error = styled.span`
+  font-size: 1rem;
+  color: var(--color-red-700);
 `;
 
 export default function CourseDetails() {
@@ -67,6 +77,11 @@ export default function CourseDetails() {
   const errorCS = [eco_cs, physics, stats].filter((v) => v).length >= 1;
 
   const { isLoading, courses_applied } = useCoursesApplied();
+
+  // const { register, handleSubmit, getValues, formState, reset } = useForm({});
+  const { register, handleSubmit, formState, reset } = useForm({});
+
+  const { errors: formErrors } = formState;
 
   const handleChange1 = (event) => {
     if (event.target.checked) {
@@ -114,8 +129,8 @@ export default function CourseDetails() {
     setPriority(event.target.value);
   };
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  function onSubmit() {
+    // e.preventDefault();
     let courses;
 
     if (group === "Humanities")
@@ -127,26 +142,31 @@ export default function CourseDetails() {
     else if (group === "ICS") courses = "Computer-Maths-" + subjectsCS[0];
     else if (group === "I.Com")
       courses = "Accounting-Commerce-Bus.Math-Economics";
-
+    // console.log("Priority-in OnSubmit-->", priority);
     createCourses(
       { courses, group, studentId, priority },
       {
-        onSuccess: (data) => {
-          //   reset();
-          console.log("Data after submission...", data);
+        // onSuccess: () => {
+        //   reset();
+        //   // console.log("Data after submission...", data);
+        //   navigate(`/dashboard/${studentId}`);
+        // },
+        onSettled: () => {
+          reset();
+          // console.log("Data after submission...", data);
           navigate(`/dashboard/${studentId}`);
         },
       }
     );
   }
-  if (isLoading) return <Spinner />;
+  if (isLoading || isCreating) return <Spinner />;
   const courseCount = courses_applied.length;
 
   return (
-    <Form type="regular" onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <Heading type="h3">Select the group and courses to apply for:</Heading>
       <FormRow>
-        <label htmlFor="group">Select the Group</label>
+        <Label htmlFor="group">Select the Group</Label>
         <select
           id="group"
           name="group"
@@ -155,7 +175,6 @@ export default function CourseDetails() {
           onChange={handleSelectChange}
           //   error={Boolean(touched.group) && Boolean(errors.group)}
           //   helperText={touched.group && errors.group}
-          required
         >
           <option>Select the Group</option>
           <option value={"Humanities"}>Humanities</option>
@@ -172,10 +191,14 @@ export default function CourseDetails() {
           id="priority"
           name="priority"
           value={priority}
-          onChange={handlePriorityChange}
-          required
+          aria-placeholder="select priority"
+          // onChange={handlePriorityChange}
+          {...register("priority", {
+            required: "This field is required!",
+            onChange: handlePriorityChange,
+          })}
         >
-          <option>Select Priority </option>
+          <option value="">Select...</option>
           {courseCount === 0 ? (
             <>
               <option value={"First"}>First</option>
@@ -193,6 +216,9 @@ export default function CourseDetails() {
             </>
           ) : null}
         </select>
+        {formErrors?.priority?.message && (
+          <Error>{formErrors.priority.message}</Error>
+        )}
       </FormRow>
 
       <FormRow>
@@ -504,7 +530,10 @@ export default function CourseDetails() {
           <Button disabled={isCreating}>Apply</Button>
         </FormRow>
       )}
-      {(group == 2 || group == 3 || group == 4 || group == 6) && (
+      {(group === "Pre-Engineering" ||
+        group === "Pre-Medical" ||
+        group === "General Science" ||
+        group === "I.Com") && (
         <FormRow>
           <Button disabled={isCreating}>Apply</Button>
         </FormRow>

@@ -15,14 +15,14 @@ export async function createStudent(newStudent) {
 }
 
 export async function createCourses(newCourses) {
-  console.log("createCourses ~ newCourses:", newCourses);
+  // console.log("createCourses ~ newCourses:", newCourses);
 
   let query = supabase.from("courses_applied").insert([{ ...newCourses }]);
 
   const { data, error } = await query.select().single();
 
   if (error) {
-    console.log(error);
+    // console.log(error);
     throw new Error("Courses could not be added!");
   }
   return data;
