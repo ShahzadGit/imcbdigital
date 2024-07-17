@@ -6,11 +6,12 @@ import LoginForm from "../features/authentication/LoginForm";
 const LoginLayout = styled.main`
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 48rem;
+  grid-template-columns: minmax(auto, 48rem);
   align-content: center;
   justify-content: center;
-  gap: 3.2rem;
+  gap: 3rem;
   background-color: var(--color-grey-50);
+  padding-top: 2rem;
 `;
 
 function Login() {

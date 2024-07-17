@@ -7,6 +7,11 @@ const MyDiv = styled.div`
   font-weight: 600;
   color: var(--color-grey-600);
   font-family: "Sono";
+
+  @media only screen and (max-width: 576px) {
+    font-size: 1rem;
+    font-weight: 500;
+  }
 `;
 /*
 const Stacked = styled.div`

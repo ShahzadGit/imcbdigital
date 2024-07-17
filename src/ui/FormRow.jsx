@@ -28,7 +28,7 @@ const StyledFormRow = styled.div`
   }
 
   @media only screen and (max-width: 576px) {
-    grid-template-columns: 15rem 1.5fr 1.5fr;
+    grid-template-columns: 10rem 1fr;
     gap: 1.5rem;
   }
 `;

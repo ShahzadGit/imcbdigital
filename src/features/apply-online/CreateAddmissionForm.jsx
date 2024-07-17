@@ -2,6 +2,7 @@
 import styled from "styled-components";
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
+import FormRow from "../../ui/FormRow";
 import Button from "../../ui/Button";
 import Textarea from "../../ui/Textarea";
 import { useForm } from "react-hook-form";
@@ -11,45 +12,9 @@ import { useUser } from "../authentication/useUser";
 import Heading from "../../ui/Heading";
 import { useNavigate } from "react-router-dom";
 
-const FormRow = styled.div`
-  display: grid;
-  align-items: center;
-  grid-template-columns: 24rem 1fr 1.2fr;
-  gap: 2.4rem;
-
-  padding: 1.2rem 0;
-
-  &:first-child {
-    padding-top: 0;
-  }
-
-  &:last-child {
-    padding-bottom: 0;
-  }
-
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-
-  &:has(button) {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1.2rem;
-  }
-  @media only screen and (max-width: 576px) {
-    grid-template-columns: 18rem 2fr 1fr;
-    gap: 1.5rem;
-  }
-`;
-
 const Label = styled.label`
   font-weight: 500;
 `;
-
-// const Error = styled.span`
-//   font-size: 1.4rem;
-//   color: var(--color-red-700);
-// `;
 
 const Error = styled.span`
   font-size: 1rem;
@@ -66,22 +31,6 @@ function CreateAddmissionForm() {
 
   const { errors } = formState;
 
-  // const queryClient = useQueryClient(); //It will be use as reference to the cache
-  // const { isLoading: isCreating, mutate: createCabin } = useMutation({
-  //   mutationFn: createEditCabin,
-  //   // mutationFn: (id) => createCabin(id),
-  //   // After creating, we need to invalidate the cache so that updated records are fetched
-  //   onSuccess: () => {
-  //     toast.success("Cabin Created Successfully!");
-  //     queryClient.invalidateQueries({
-  //       queryKey: ["cabins"],
-  //     });
-  //     reset();
-  //   },
-  //   onError: (err) => toast.error(err.message),
-  // });
-
-  // The above comented code has be moved in custom hook, below it is imported.
   const { isCreating, createStudent } = useCreateStudent();
   const { user } = useUser();
   const { id: uuid } = user;

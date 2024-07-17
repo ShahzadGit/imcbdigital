@@ -24,7 +24,7 @@ function CourseTable() {
       {!courses_applied.length || isLoading ? (
         <Empty resourceName="Courses" />
       ) : (
-        <Table columns="1fr 2fr 2fr 1fr">
+        <Table columns="1fr 1fr 2fr 2fr">
           <Table.Header>
             <div>Priority</div>
             <div>Group</div>

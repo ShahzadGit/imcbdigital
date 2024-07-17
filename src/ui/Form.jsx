@@ -20,6 +20,12 @@ const Form = styled.form`
     
   overflow: hidden;
   font-size: 1.4rem;
+
+  @media only screen and (max-width: 576px) {
+    overflow: scroll;
+    font-size: 1.2rem;
+    padding: 2rem 2.5rem;
+  }
 `;
 
 Form.defaultProps = {

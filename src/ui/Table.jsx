@@ -9,6 +9,11 @@ const StyledTable = styled.div`
   background-color: var(--color-grey-0);
   border-radius: 7px;
   overflow: hidden;
+
+  @media only screen and (max-width: 576px) {
+    font-size: 1rem;
+    overflow: visible;
+  }
 `;
 
 const CommonRow = styled.div`
@@ -28,6 +33,12 @@ const StyledHeader = styled(CommonRow)`
   letter-spacing: 0.4px;
   font-weight: 600;
   color: var(--color-grey-600);
+
+  @media only screen and (max-width: 576px) {
+    padding: 1rem 1rem;
+    letter-spacing: 0px;
+    font-weight: 500;
+  }
 `;
 
 const StyledRow = styled(CommonRow)`
@@ -35,6 +46,9 @@ const StyledRow = styled(CommonRow)`
 
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
+  }
+  @media only screen and (max-width: 576px) {
+    padding: 1rem 1rem;
   }
 `;
 

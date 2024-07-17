@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Form from "../../ui/Form";
+import FormRow from "../../ui/FormRow";
+import Input from "../../ui/Input";
 import Heading from "../../ui/Heading";
 import styled from "styled-components";
 import Button from "../../ui/Button";
@@ -8,33 +10,6 @@ import { useCreateCourses } from "./useCreateCourses";
 import { useCoursesApplied } from "../dashboard/useCoursesApplied";
 import Spinner from "../../ui/Spinner";
 import { useForm } from "react-hook-form";
-
-const FormRow = styled.div`
-  display: grid;
-  align-items: center;
-  grid-template-columns: 24rem 1fr 1.2fr;
-  gap: 2.4rem;
-
-  padding: 1.2rem 0;
-
-  &:first-child {
-    padding-top: 0;
-  }
-
-  &:last-child {
-    padding-bottom: 0;
-  }
-
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-
-  &:has(button) {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1.2rem;
-  }
-`;
 
 const Label = styled.label`
   font-weight: 500;
@@ -64,7 +39,7 @@ export default function CourseDetails() {
     stats: false,
     physics: false,
   });
-  const [subjectsCS, setSubjectsCS] = useState([]);
+  const [subjectsCS, setSubjectsCS] = useState("");
 
   const { isCreating, createCourses } = useCreateCourses();
   const navigate = useNavigate();
@@ -99,16 +74,16 @@ export default function CourseDetails() {
 
   const handleChange2 = (event) => {
     if (event.target.checked) {
-      if (subjectsCS[0] === "") setSubjectsCS([event.target.value]);
-      else setSubjectsCS([...subjects, event.target.value]);
-    } else {
-      setSubjectsCS(subjectsCS.filter((e) => e !== event.target.value));
+      setSubjectsCS(event.target.value);
     }
+    // } else {
+    //   setSubjectsCS(subjectsCS.filter((e) => e !== event.target.value));
+    // }
     setstateForCS({
       ...stateForCS,
       [event.target.name]: event.target.checked,
     });
-    // console.log("Subjects: ", subjects);
+    console.log("Subject for CS: ", subjectsCS);
   };
 
   const handleSelectChange = (event) => {
@@ -139,7 +114,7 @@ export default function CourseDetails() {
     else if (group === "Pre-Medical") courses = "Chemistry-Bio-Physics";
     else if (group === "General Science")
       courses = "Economics-Maths-Statistics";
-    else if (group === "ICS") courses = "Computer-Maths-" + subjectsCS[0];
+    else if (group === "ICS") courses = "Computer-Maths-" + subjectsCS;
     else if (group === "I.Com")
       courses = "Accounting-Commerce-Bus.Math-Economics";
     // console.log("Priority-in OnSubmit-->", priority);
@@ -221,305 +196,305 @@ export default function CourseDetails() {
         )}
       </FormRow>
 
-      <FormRow>
-        {group === "Humanities" && (
-          <fieldset>
-            <legend>Pick THREE elective subjects</legend>
-            <div>
-              <input
-                type="checkbox"
-                id="islStd"
-                checked={islStd}
-                onChange={handleChange1}
-                name="islStd"
-                value="islStd"
-                disabled={error & !islStd}
-              />
-              <label htmlFor="islStd">Islamic Studies</label>
-            </div>
-            <div>
-              <input
-                disabled={error & !history}
-                type="checkbox"
-                id="history"
-                checked={history}
-                onChange={handleChange1}
-                name="history"
-                value="history"
-              />
-              <label htmlFor="history">Islamic History</label>
-            </div>
-            <div>
-              <input
-                disabled={error & !civics}
-                type="checkbox"
-                checked={civics}
-                onChange={handleChange1}
-                id="civics"
-                name="civics"
-                value="civics"
-              />
-              <label htmlFor="civics">Civics</label>
-            </div>
-            <div>
-              <input
-                disabled={error & !hAndP}
-                type="checkbox"
-                checked={hAndP}
-                onChange={handleChange1}
-                id="hAndP"
-                name="hAndP"
-                value="hAndP"
-              />
-              <label htmlFor="hAndP">Health and Physical Edu.</label>
-            </div>
-            <div>
-              <input
-                disabled={error & !geo}
-                type="checkbox"
-                id="geo"
-                checked={geo}
-                onChange={handleChange1}
-                name="geo"
-                value="geo"
-              />
-              <label htmlFor="geo">Geography</label>
-            </div>
-            <div>
-              <input
-                disabled={error & !eco}
-                type="checkbox"
-                id="eco"
-                checked={eco}
-                onChange={handleChange1}
-                name="eco"
-                value="eco"
-              />
-              <label htmlFor="eco">Economics</label>
-            </div>
-          </fieldset>
-        )}
+      {/* <FormRow> */}
+      {group === "Humanities" && (
+        <fieldset>
+          <legend>Pick THREE elective subjects</legend>
+          <div>
+            <Input
+              type="checkbox"
+              id="islStd"
+              checked={islStd}
+              onChange={handleChange1}
+              name="islStd"
+              value="islStd"
+              disabled={error & !islStd}
+            />
+            <label htmlFor="islStd">Islamic Studies</label>
+          </div>
+          <div>
+            <input
+              disabled={error & !history}
+              type="checkbox"
+              id="history"
+              checked={history}
+              onChange={handleChange1}
+              name="history"
+              value="history"
+            />
+            <label htmlFor="history">Islamic History</label>
+          </div>
+          <div>
+            <input
+              disabled={error & !civics}
+              type="checkbox"
+              checked={civics}
+              onChange={handleChange1}
+              id="civics"
+              name="civics"
+              value="civics"
+            />
+            <label htmlFor="civics">Civics</label>
+          </div>
+          <div>
+            <input
+              disabled={error & !hAndP}
+              type="checkbox"
+              checked={hAndP}
+              onChange={handleChange1}
+              id="hAndP"
+              name="hAndP"
+              value="hAndP"
+            />
+            <label htmlFor="hAndP">Health and Physical Edu.</label>
+          </div>
+          <div>
+            <input
+              disabled={error & !geo}
+              type="checkbox"
+              id="geo"
+              checked={geo}
+              onChange={handleChange1}
+              name="geo"
+              value="geo"
+            />
+            <label htmlFor="geo">Geography</label>
+          </div>
+          <div>
+            <input
+              disabled={error & !eco}
+              type="checkbox"
+              id="eco"
+              checked={eco}
+              onChange={handleChange1}
+              name="eco"
+              value="eco"
+            />
+            <label htmlFor="eco">Economics</label>
+          </div>
+        </fieldset>
+      )}
 
-        {group === "Pre-Engineering" && (
-          <fieldset>
-            <legend>THREE elective subjects are:</legend>
-            <div>
-              <input
-                type="checkbox"
-                id="Chemistry"
-                checked={true}
-                name="Chemistry"
-                value="Chemistry"
-                disabled
-              />
-              <label htmlFor="Chemistry">Chemistry</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="Maths"
-                checked={true}
-                name="Maths"
-                value="Maths"
-                disabled
-              />
-              <label htmlFor="Maths">Mathematics</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="Physics"
-                checked={true}
-                name="Physics"
-                value="Physics"
-                disabled
-              />
-              <label htmlFor="Physics">Physics</label>
-            </div>
-          </fieldset>
-        )}
+      {group === "Pre-Engineering" && (
+        <fieldset>
+          <legend>THREE elective subjects are:</legend>
+          <div>
+            <input
+              type="checkbox"
+              id="Chemistry"
+              checked={true}
+              name="Chemistry"
+              value="Chemistry"
+              disabled
+            />
+            <label htmlFor="Chemistry">Chemistry</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              id="Maths"
+              checked={true}
+              name="Maths"
+              value="Maths"
+              disabled
+            />
+            <label htmlFor="Maths">Mathematics</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              id="Physics"
+              checked={true}
+              name="Physics"
+              value="Physics"
+              disabled
+            />
+            <label htmlFor="Physics">Physics</label>
+          </div>
+        </fieldset>
+      )}
 
-        {group === "Pre-Medical" && (
-          <fieldset>
-            <legend>THREE elective subjects are:</legend>
-            <div>
-              <input
-                type="checkbox"
-                id="Chemistry"
-                checked={true}
-                name="Chemistry"
-                value="Chemistry"
-                disabled
-              />
-              <label htmlFor="Chemistry">Chemistry</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="Biology"
-                checked={true}
-                name="Biology"
-                value="Biology"
-                disabled
-              />
-              <label htmlFor="Biology">Biology</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="Physics"
-                checked={true}
-                name="Physics"
-                value="Physics"
-                disabled
-              />
-              <label htmlFor="Physics">Physics</label>
-            </div>
-          </fieldset>
-        )}
+      {group === "Pre-Medical" && (
+        <fieldset>
+          <legend>THREE elective subjects are:</legend>
+          <div>
+            <input
+              type="checkbox"
+              id="Chemistry"
+              checked={true}
+              name="Chemistry"
+              value="Chemistry"
+              disabled
+            />
+            <label htmlFor="Chemistry">Chemistry</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              id="Biology"
+              checked={true}
+              name="Biology"
+              value="Biology"
+              disabled
+            />
+            <label htmlFor="Biology">Biology</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              id="Physics"
+              checked={true}
+              name="Physics"
+              value="Physics"
+              disabled
+            />
+            <label htmlFor="Physics">Physics</label>
+          </div>
+        </fieldset>
+      )}
 
-        {group === "General Science" && (
-          <fieldset>
-            <legend>THREE elective subjects are:</legend>
-            <div>
-              <input
-                type="checkbox"
-                id="Economics"
-                checked={true}
-                name="Economics"
-                value="Economics"
-                disabled
-              />
-              <label htmlFor="Economics">Economics</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="Maths"
-                checked={true}
-                name="Maths"
-                value="Maths"
-                disabled
-              />
-              <label htmlFor="Maths">Mathematics</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="Statistics"
-                checked={true}
-                name="Statistics"
-                value="Statistics"
-                disabled
-              />
-              <label htmlFor="Statistics">Statistics</label>
-            </div>
-          </fieldset>
-        )}
+      {group === "General Science" && (
+        <fieldset>
+          <legend>THREE elective subjects are:</legend>
+          <div>
+            <input
+              type="checkbox"
+              id="Economics"
+              checked={true}
+              name="Economics"
+              value="Economics"
+              disabled
+            />
+            <label htmlFor="Economics">Economics</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              id="Maths"
+              checked={true}
+              name="Maths"
+              value="Maths"
+              disabled
+            />
+            <label htmlFor="Maths">Mathematics</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              id="Statistics"
+              checked={true}
+              name="Statistics"
+              value="Statistics"
+              disabled
+            />
+            <label htmlFor="Statistics">Statistics</label>
+          </div>
+        </fieldset>
+      )}
 
-        {group === "ICS" && (
-          <fieldset>
-            <legend>Pick One elective subject</legend>
-            <div>
-              <input
-                disabled={true}
-                type="checkbox"
-                checked={true}
-                id="Computer Science"
-                name="Computer Science"
-                value="CompScience"
-              />
-              <label htmlFor="Computer Science">Computer Science</label>
-            </div>
-            <div>
-              <input
-                disabled={true}
-                type="checkbox"
-                checked={true}
-                id="Maths"
-                name="Maths"
-                value="Maths"
-              />
-              <label htmlFor="Maths">Maths</label>
-            </div>
-            <div>
-              <input
-                disabled={errorCS & !physics}
-                type="checkbox"
-                checked={physics}
-                onChange={handleChange2}
-                id="physics"
-                name="physics"
-                value="Physics"
-              />
-              <label htmlFor="physics">Physics</label>
-            </div>
-            <div>
-              <input
-                disabled={errorCS & !stats}
-                type="checkbox"
-                id="stats"
-                checked={stats}
-                onChange={handleChange2}
-                name="stats"
-                value="Statistics"
-              />
-              <label htmlFor="stats">Statistics</label>
-            </div>
-            <div>
-              <input
-                disabled={errorCS & !eco_cs}
-                type="checkbox"
-                id="eco"
-                checked={eco_cs}
-                onChange={handleChange2}
-                name="eco"
-                value="eco"
-              />
-              <label htmlFor="eco">Economics</label>
-            </div>
-          </fieldset>
-        )}
+      {group === "ICS" && (
+        <fieldset>
+          <legend>Pick One elective subject</legend>
+          <div>
+            <input
+              disabled={true}
+              type="checkbox"
+              checked={true}
+              id="Computer Science"
+              name="Computer Science"
+              value="CompScience"
+            />
+            <label htmlFor="Computer Science">Computer Science</label>
+          </div>
+          <div>
+            <input
+              disabled={true}
+              type="checkbox"
+              checked={true}
+              id="Maths"
+              name="Maths"
+              value="Maths"
+            />
+            <label htmlFor="Maths">Maths</label>
+          </div>
+          <div>
+            <input
+              disabled={errorCS & !physics}
+              type="checkbox"
+              checked={physics}
+              onChange={handleChange2}
+              id="physics"
+              name="physics"
+              value="Physics"
+            />
+            <label htmlFor="physics">Physics</label>
+          </div>
+          <div>
+            <input
+              disabled={errorCS & !stats}
+              type="checkbox"
+              id="stats"
+              checked={stats}
+              onChange={handleChange2}
+              name="stats"
+              value="Statistics"
+            />
+            <label htmlFor="stats">Statistics</label>
+          </div>
+          <div>
+            <input
+              disabled={errorCS & !eco_cs}
+              type="checkbox"
+              id="eco"
+              checked={eco_cs}
+              onChange={handleChange2}
+              name="eco"
+              value="eco"
+            />
+            <label htmlFor="eco">Economics</label>
+          </div>
+        </fieldset>
+      )}
 
-        {group === "I.Com" && (
-          <fieldset>
-            <legend>Elective subjects are:</legend>
-            <div>
-              <input
-                type="checkbox"
-                id="Economics"
-                checked={true}
-                name="Economics"
-                value="Economics"
-                disabled
-              />
-              <label htmlFor="Economics">Economics</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="Buss_Maths"
-                checked={true}
-                name="Buss_Maths"
-                value="Buss_Maths"
-                disabled
-              />
-              <label htmlFor="Buss_Maths">Buss_Mathematics</label>
-            </div>
-            <div>
-              <input
-                type="checkbox"
-                id="Accounting"
-                checked={true}
-                name="Accounting"
-                value="Accounting"
-                disabled
-              />
-              <label htmlFor="Accounting">Accounting</label>
-            </div>
-          </fieldset>
-        )}
-      </FormRow>
+      {group === "I.Com" && (
+        <fieldset>
+          <legend>Elective subjects are:</legend>
+          <div>
+            <input
+              type="checkbox"
+              id="Economics"
+              checked={true}
+              name="Economics"
+              value="Economics"
+              disabled
+            />
+            <label htmlFor="Economics">Economics</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              id="Buss_Maths"
+              checked={true}
+              name="Buss_Maths"
+              value="Buss_Maths"
+              disabled
+            />
+            <label htmlFor="Buss_Maths">Buss_Mathematics</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              id="Accounting"
+              checked={true}
+              name="Accounting"
+              value="Accounting"
+              disabled
+            />
+            <label htmlFor="Accounting">Accounting</label>
+          </div>
+        </fieldset>
+      )}
+      {/* </FormRow> */}
       {error && (
         <FormRow>
           <Button disabled={isCreating}>Apply</Button>

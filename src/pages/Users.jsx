@@ -17,7 +17,7 @@ function NewUsers() {
     <>
       <Container>
         <Logo />
-        <Heading as="h2">Welcome to APPLY-ONLINE portal.</Heading>
+        <Heading type="h2">Welcome to APPLY-ONLINE portal.</Heading>
         <Heading type="h3">Create a new student account</Heading>
         {/* <CompuondCounter /> */}
       </Container>
