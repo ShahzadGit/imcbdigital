@@ -11,6 +11,7 @@ import { useCreateStudent } from "./useCreateStudent";
 import { useUser } from "../authentication/useUser";
 import Heading from "../../ui/Heading";
 import { useNavigate } from "react-router-dom";
+import { useHookFormMask } from "use-mask-input";
 
 const Label = styled.label`
   font-weight: 500;
@@ -22,12 +23,8 @@ const Error = styled.span`
 `;
 
 function CreateAddmissionForm() {
-  // const { id: editId, ...editValues } = cabinToEdit;
-  // const isEditSession = Boolean(editId); //If there is an id than Edit cabin
-
-  const { register, handleSubmit, getValues, formState, reset } = useForm({
-    // defaultValues: isEditSession ? editValues : {},
-  });
+  const { register, handleSubmit, getValues, formState, reset } = useForm({});
+  const registerWithMask = useHookFormMask(register);
 
   const { errors } = formState;
 
@@ -49,9 +46,7 @@ function CreateAddmissionForm() {
       }
     );
   }
-  // function onError(errors) {
-  //   console.log("errors", errors);
-  // }
+
   return (
     <Form onSubmit={handleSubmit(onSubmit)} type="regular">
       <Heading type="h3">Candidate Information</Heading>
@@ -60,7 +55,7 @@ function CreateAddmissionForm() {
         <Input
           type="text"
           id="cnic"
-          {...register("cnic", {
+          {...registerWithMask("cnic", ["99999-9999999-9"], {
             required: "This field is required!",
           })}
           disabled={isCreating}
@@ -83,12 +78,16 @@ function CreateAddmissionForm() {
       <FormRow>
         <Label htmlFor="passing_year">Passing Year</Label>
         <Input
-          type="number"
+          type="text"
           id="passing_year"
-          {...register("passing_year", {
+          {...registerWithMask("passing_year", ["9999"], {
             required: "This field is required!",
             min: {
               value: 2022,
+              message: "Passing Year should be between (2022-2024).",
+            },
+            max: {
+              value: 2024,
               message: "Passing Year should be between (2022-2024).",
             },
           })}
@@ -132,9 +131,13 @@ function CreateAddmissionForm() {
         <Input
           type="number"
           id="total_marks"
-          defaultValue={0}
+          defaultValue={1100}
           {...register("total_marks", {
             required: "This field is required!",
+            maxLength: {
+              value: 4,
+              message: "Can not exceed four digits",
+            },
           })}
         />
         {errors?.total_marks?.message && (
@@ -181,7 +184,7 @@ function CreateAddmissionForm() {
         <Input
           type="text"
           id="cnic_father"
-          {...register("cnic_father", {
+          {...registerWithMask("cnic_father", ["99999-9999999-9"], {
             required: "This field is required!",
           })}
           disabled={isCreating}
@@ -192,18 +195,31 @@ function CreateAddmissionForm() {
       </FormRow>
 
       <FormRow>
-        <Label htmlFor="occupation">
-          Occupation of Father (e.g. Govt.
-          Employee/Business/Self-Employeed/Other)
-        </Label>
-        <Input
+        <Label htmlFor="occupation">Occupation of Father</Label>
+        {/* <Input
           type="text"
           id="occupation"
           {...register("occupation", {
             required: "This field is required!",
           })}
           disabled={isCreating}
-        />
+        /> */}
+        <select
+          id="occupation"
+          name="occupation"
+          // value={priority}
+          // onChange={handlePriorityChange}
+          {...register("occupation", {
+            required: "This field is required!",
+            // onChange: handlePriorityChange,
+          })}
+        >
+          <option value="">Select...</option>
+          <option value={"Govt. Employee"}>Govt. Employee</option>
+          <option value={"Business"}>Business</option>
+          <option value={"Self-Employeed"}>Self-Employeed</option>
+          <option value={"Other"}>Other</option>
+        </select>
         {errors?.occupation?.message && (
           <Error>{errors.occupation.message}</Error>
         )}
@@ -214,8 +230,13 @@ function CreateAddmissionForm() {
         <Input
           type="number"
           id="contact"
+          defaultValue={"03"}
           {...register("contact", {
             required: "This field is required!",
+            maxLength: {
+              value: 11,
+              message: "Can not exceed 11 digits",
+            },
           })}
         />
         {errors?.contact?.message && <Error>{errors.contact.message}</Error>}
@@ -226,8 +247,13 @@ function CreateAddmissionForm() {
         <Input
           type="number"
           id="contact_wtp"
+          defaultValue={"03"}
           {...register("contact_wtp", {
             required: "This field is required!",
+            maxLength: {
+              value: 11,
+              message: "Can not exceed 11 digits",
+            },
           })}
         />
         {errors?.contact_wtp?.message && (
@@ -251,20 +277,33 @@ function CreateAddmissionForm() {
       </FormRow>
 
       <FormRow>
-        <Label htmlFor="quota">
-          Quota (e.g. FG-Employee/ICT-Resident/FATA-FANA/Sports/Disable)
-        </Label>
-        <Input
+        <Label htmlFor="quota">Quota</Label>
+        {/* <Input
           type="text"
           id="quota"
           {...register("quota", {
             required: "This field is required!",
           })}
           disabled={isCreating}
-        />
-        {errors?.occupation?.message && (
-          <Error>{errors.occupation.message}</Error>
-        )}
+        /> */}
+        <select
+          id="quota"
+          name="quota"
+          // value={priority}
+          // onChange={handlePriorityChange}
+          {...register("quota", {
+            required: "This field is required!",
+            // onChange: handlePriorityChange,
+          })}
+        >
+          <option value="">Select...</option>
+          <option value={"FG-Employee"}>FG-Employee</option>
+          <option value={"ICT-Resident"}>ICT-Resident</option>
+          <option value={"FATA-FANA"}>FATA-FANA</option>
+          <option value={"Sports"}>Sports</option>
+          <option value={"Other"}>Other</option>
+        </select>
+        {errors?.quota?.message && <Error>{errors.quota.message}</Error>}
       </FormRow>
 
       <FormRow>
