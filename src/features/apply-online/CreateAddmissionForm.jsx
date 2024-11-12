@@ -31,17 +31,24 @@ function CreateAddmissionForm() {
   const { isCreating, createStudent } = useCreateStudent();
   const { user } = useUser();
   const { id: uuid } = user;
-  const { fullName } = user.user_metadata;
+  const { fullName, avatar } = user.user_metadata;
+
   const navigate = useNavigate();
 
   function onSubmit(data) {
+    // console.log("🚀 ~ onSubmit ~ data:", data);
+    // console.log("🚀 ~ CreateAddmissionForm ~ avatar:", avatar);
+    // console.log("🚀 ~ CreateAddmissionForm ~ fullName:", fullName);
+
     createStudent(
-      { ...data, uuid, fullName },
+      { ...data, uuid, fullName, avatar },
       {
-        onSuccess: (data) => {
+        onSuccess: () => {
           reset();
           // console.log("Data after submission...", data);
-          navigate(`/applyonline/${data?.id}`);
+          // navigate(`/applyonline/${data?.id}`);
+          // navigate(`/dashboard/${data?.id}`);
+          navigate(`/dashboard`);
         },
       }
     );

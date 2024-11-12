@@ -46,12 +46,21 @@ const variations = {
       background-color: var(--color-red-800);
     }
   `,
+  green: css`
+    color: var(--color-green-100);
+    background-color: var(--color-green-700);
+
+    &:hover {
+      background-color: var(--color-green-700);
+    }
+  `,
 };
 
 const Button = styled.button`
   border: none;
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
+  margin-top: 0.5rem;
   ${(props) => sizes[props.size]}
   ${(props) => variations[props.variation]}
 `;

@@ -8,10 +8,6 @@ export async function login({ email, password }) {
   if (error) throw new Error(error.message);
   // console.log("🚀 ~ login ~ data:", data.user.id);
 
-  if (error) {
-    console.error(error);
-    throw new Error("Student not found");
-  }
   // The below code will fetch the studentId for the loged in user
   let query = supabase
     .from("studentsapplied")
@@ -19,7 +15,7 @@ export async function login({ email, password }) {
     .eq("uuid", data.user.id);
 
   const { data: data2, error2 } = await query;
-  let studentId = data2[0].id;
+  let studentId = data2.length > 0 ? data2[0].id : "0";
 
   if (error2) {
     console.error(error2);
@@ -88,7 +84,13 @@ export async function updateCurrentUser({ fullName, password, avatar }) {
   return updatedUser;
 }
 
-export async function signupWithAvatar({ fullName, email, password, avatar }) {
+export async function signupWithAvatar({
+  fullName,
+  email,
+  password,
+  avatar,
+  role,
+}) {
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -96,6 +98,7 @@ export async function signupWithAvatar({ fullName, email, password, avatar }) {
       data: {
         fullName,
         avatar: "",
+        role,
       },
     },
   });

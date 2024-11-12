@@ -1,19 +1,20 @@
-import CourseTable from "../features/dashboard/CourseTable";
-import Heading from "../ui/Heading";
-import Row from "../ui/Row";
+import { useUser } from "../features/authentication/useUser";
+import StudentDashboard from "../features/dashboard/StudentDashboard";
+import AdminDashboard from "../features/dashboard/AdminDashboard";
+import Spinner from "../ui/Spinner";
+import FacultyDashboard from "../features/dashboard/FacultyDashboard";
 
 function Dashboard() {
+  const { user, isLoading } = useUser();
+
+  if (isLoading) return <Spinner />;
+  const { role } = user.user_metadata;
   return (
     <>
-      <Row type="horizontal">
-        <Heading type="h1">Dashboard</Heading>
-      </Row>
-      <Row>
-        <Heading type="h3">
-          You have applied for following groups and courses
-        </Heading>
-      </Row>
-      <CourseTable />
+      {!role && <StudentDashboard />}
+      {role === "student" && <StudentDashboard />}
+      {role === "admin" && <AdminDashboard />}
+      {role === "faculty" && <FacultyDashboard />}
     </>
   );
 }

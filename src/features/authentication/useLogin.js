@@ -10,9 +10,15 @@ export function useLogin() {
   const { mutate: login, isLoading } = useMutation({
     mutationFn: ({ email, password }) => loginApi({ email, password }),
     onSuccess: (user) => {
-      // console.log("StudentID:", user.studentId);
+      // console.log("user.user_metadata:", user.data.user.user_metadata.role);
       queryClient.setQueryData(["user"], user.user);
-      navigate(`/dashboard/${user.studentId}`);
+      //If user exists but no record exists in studentsapplied table then user is redirected to the page to create profile first
+      if (
+        user.studentId === "0" &&
+        user.data.user.user_metadata.role === "student"
+      )
+        navigate("/applyonline");
+      else navigate(`/dashboard`);
     },
     onError: (err) => {
       console.log("Error-->", err);

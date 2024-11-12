@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Logo from "./Logo";
-// import MainNav from "./MainNav";
+import MainNav from "./MainNav";
 // import Uploader from "../data/Uploader";
 
 const StyledSideBar = styled.aside`
@@ -8,7 +8,7 @@ const StyledSideBar = styled.aside`
   /* grid-row: 2 / -1; */
   grid-row: 1 / -1;
   border-right: 1px solid var(--color-grey-100);
-  padding: 2.5rem;
+  padding: 2rem 1rem;
 
   @media only screen and (max-width: 576px) {
     display: none;
@@ -18,7 +18,7 @@ export default function SideBar() {
   return (
     <StyledSideBar>
       <Logo />
-      {/* <MainNav /> */}
+      <MainNav />
       {/* <Uploader /> */}
     </StyledSideBar>
   );

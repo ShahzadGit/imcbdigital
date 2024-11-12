@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
@@ -5,11 +6,12 @@ import Input from "../../ui/Input";
 import Heading from "../../ui/Heading";
 import styled from "styled-components";
 import Button from "../../ui/Button";
-import { useNavigate, useParams } from "react-router-dom";
 import { useCreateCourses } from "./useCreateCourses";
-import { useCoursesApplied } from "../dashboard/useCoursesApplied";
+import { useCoursesApplied } from "./useCoursesApplied";
 import Spinner from "../../ui/Spinner";
 import { useForm } from "react-hook-form";
+import { useUser } from "../authentication/useUser";
+import { useGetStudent } from "./useGetStudent";
 
 const Label = styled.label`
   font-weight: 500;
@@ -20,10 +22,18 @@ const Error = styled.span`
   color: var(--color-red-700);
 `;
 
-export default function CourseDetails() {
+export default function CourseDetails({ onCloseModal }) {
   const [group, setGroup] = useState("");
   const [priority, setPriority] = useState("");
-  const { studentId } = useParams();
+
+  const { user } = useUser();
+  const { id: uuid } = user;
+  const { student, isLoading: isLoadingStd } = useGetStudent(uuid);
+  const studentId = student[0]?.id;
+
+  const { isLoading, courses_applied } = useCoursesApplied(studentId);
+  const courseCount = courses_applied.length;
+
   const [state, setState] = useState({
     islStd: true,
     history: true,
@@ -42,7 +52,7 @@ export default function CourseDetails() {
   const [subjectsCS, setSubjectsCS] = useState("");
 
   const { isCreating, createCourses } = useCreateCourses();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const { islStd, history, civics, hAndP, geo, eco } = state;
   const error =
@@ -50,8 +60,6 @@ export default function CourseDetails() {
 
   const { eco_cs, physics, stats } = stateForCS;
   const errorCS = [eco_cs, physics, stats].filter((v) => v).length >= 1;
-
-  const { isLoading, courses_applied } = useCoursesApplied();
 
   // const { register, handleSubmit, getValues, formState, reset } = useForm({});
   const { register, handleSubmit, formState, reset } = useForm({});
@@ -83,7 +91,7 @@ export default function CourseDetails() {
       ...stateForCS,
       [event.target.name]: event.target.checked,
     });
-    console.log("Subject for CS: ", subjectsCS);
+    // console.log("Subject for CS: ", subjectsCS);
   };
 
   const handleSelectChange = (event) => {
@@ -118,8 +126,9 @@ export default function CourseDetails() {
     else if (group === "I.Com")
       courses = "Accounting-Commerce-Bus.Math-Economics";
     // console.log("Priority-in OnSubmit-->", priority);
+    console.log("ONN--Submit--studentId:", studentId);
     createCourses(
-      { courses, group, studentId, priority },
+      { courses, group, studentId, student_uuid: uuid, priority },
       {
         // onSuccess: () => {
         //   reset();
@@ -129,13 +138,14 @@ export default function CourseDetails() {
         onSettled: () => {
           reset();
           // console.log("Data after submission...", data);
-          navigate(`/dashboard/${studentId}`);
+          onCloseModal?.(); //This prop is comming from Modal Component
+          // navigate(`/dashboard/${studentId}`);
         },
       }
     );
   }
-  if (isLoading || isCreating) return <Spinner />;
-  const courseCount = courses_applied.length;
+
+  if (isLoading || isCreating || isLoadingStd) return <Spinner />;
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>

@@ -15,7 +15,9 @@ function SignupForm() {
 
   function onSubmit(data) {
     signupWithAvatar(
-      { ...data, avatar: data.image[0] },
+      // { ...data, avatar: data.image[0], role: "admin" }, // For Admin users
+      { ...data, avatar: data.image[0], role: "student" }, // for student users
+      // { ...data, avatar: data.image[0], role: "faculty" }, // for faculty users
       {
         onSettled: () => {
           reset();

@@ -1,17 +1,18 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import {
-  HiOutlineCalendarDays,
-  HiOutlineCog6Tooth,
+  HiOutlineAcademicCap,
   HiOutlineHome,
   HiOutlineHomeModern,
-  HiOutlineUsers,
+  HiMiniUsers,
+  HiOutlineCog6Tooth,
 } from "react-icons/hi2";
+import { useUser } from "../features/authentication/useUser";
 
 const NavList = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0.5rem;
 `;
 
 const StyledLink = styled(NavLink)`
@@ -19,11 +20,11 @@ const StyledLink = styled(NavLink)`
   &:visited {
     display: flex;
     align-items: center;
-    gap: 1.2rem;
+    gap: 1rem;
     color: var(--color-grey-600);
     font-size: 1.6rem;
     font-weight: 500;
-    padding: 1.2rem 2.4rem;
+    padding: 1rem;
     transition: all 0.3s;
   }
 
@@ -53,6 +54,9 @@ const StyledLink = styled(NavLink)`
 `;
 
 export default function MainNav() {
+  const { user } = useUser();
+  const { role } = user.user_metadata;
+
   return (
     <nav>
       <NavList>
@@ -62,30 +66,39 @@ export default function MainNav() {
             <span>Home</span>
           </StyledLink>
         </li>
-        <li>
-          <StyledLink to="/bookings">
-            <HiOutlineCalendarDays />
-            <span>Bookings</span>
-          </StyledLink>
-        </li>
-        <li>
-          <StyledLink to="/cabins">
-            <HiOutlineHomeModern />
-            <span>Cabins</span>
-          </StyledLink>
-        </li>
-        <li>
-          <StyledLink to="/users">
-            <HiOutlineUsers />
-            <span>Users</span>
-          </StyledLink>
-        </li>
-        <li>
-          <StyledLink to="/settings">
-            <HiOutlineCog6Tooth />
-            <span>Settings</span>
-          </StyledLink>
-        </li>
+
+        {role === "admin" && (
+          <>
+            <li>
+              <StyledLink to="/studentsapplied">
+                <HiOutlineAcademicCap />
+                <span>Admissions</span>
+              </StyledLink>
+            </li>
+            <li>
+              <StyledLink to="/studentsenrolled">
+                <HiOutlineHomeModern />
+                <span>Enrolled</span>
+              </StyledLink>
+            </li>
+            <li>
+              <StyledLink to="/facultydata">
+                <HiMiniUsers />
+                <span>Faculty</span>
+              </StyledLink>
+            </li>
+          </>
+        )}
+        {role === "faculty" && (
+          <>
+            <li>
+              <StyledLink to="/account">
+                <HiOutlineCog6Tooth />
+                <span>Settings</span>
+              </StyledLink>
+            </li>
+          </>
+        )}
       </NavList>
     </nav>
   );

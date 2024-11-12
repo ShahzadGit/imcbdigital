@@ -28,3 +28,21 @@ export const formatCurrency = (value) =>
   new Intl.NumberFormat("en", { style: "currency", currency: "USD" }).format(
     value
   );
+
+export const formatAttendanceData = (data) => {
+  // Group by roll_no and create a structure for displaying as columns
+  const groupedData = {};
+
+  data.forEach((record) => {
+    const { roll_no, date, status } = record;
+
+    if (!groupedData[roll_no]) {
+      groupedData[roll_no] = { roll_no, statuses: {} };
+    }
+
+    // Assuming date is already formatted as DD-MM-YYYY
+    groupedData[roll_no].statuses[date] = status;
+  });
+
+  return Object.values(groupedData);
+};

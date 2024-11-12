@@ -5,18 +5,24 @@ import Spinner from "../../ui/Spinner";
 import { useCoursesApplied } from "./useCoursesApplied";
 import CourseRow from "./CourseRow";
 import Button from "../../ui/Button";
-import { useNavigate, useParams } from "react-router-dom";
+// import { useParams, useNavigate } from "react-router-dom";
+import Modal from "../../ui/Modal";
+import CourseDetails from "./CourseDetails";
+import { useUser } from "../authentication/useUser";
 
 function CourseTable() {
-  const { isLoading, courses_applied } = useCoursesApplied();
-  const navigate = useNavigate();
-  const { studentId } = useParams();
-  // console.log("🚀 ~ CourseTable ~ studentId:", studentId);
+  const { user, isLoading: isLoadingUser } = useUser();
+  const { id: uuid } = user;
+
+  // const navigate = useNavigate();
+  // const { studentId } = useParams();
 
   // const { studentId } = courses_applied[0] || 0;
+  const { isLoading, courses_applied } = useCoursesApplied(uuid);
   const checkBtn = courses_applied.length < 3 || courses_applied.length == 0;
 
-  if (isLoading) return <Spinner />;
+  if (isLoading || isLoadingUser) return <Spinner />;
+
   // if (!courses_applied.length || isLoading)
   //   return <Empty resourceName="Courses" />;
   return (
@@ -39,9 +45,17 @@ function CourseTable() {
         </Table>
       )}
       {checkBtn && (
-        <Button onClick={() => navigate(`/applyonline/${studentId}`)}>
-          Apply for another program
-        </Button>
+        // <Button onClick={() => navigate(`/applyonline/${studentId}`)}>
+        //   Apply for another program
+        // </Button>
+        <Modal>
+          <Modal.Open opens="course-details">
+            <Button>Apply for another program</Button>
+          </Modal.Open>
+          <Modal.Window name="course-details">
+            <CourseDetails />
+          </Modal.Window>
+        </Modal>
       )}
     </>
   );

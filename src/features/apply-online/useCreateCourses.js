@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createCourses as createCoursesApi } from "../../services/apiStudent";
+import { createCourses as createCoursesApi } from "../../services/apiStudentOnline";
 import toast from "react-hot-toast";
 
 export function useCreateCourses() {
@@ -8,7 +8,7 @@ export function useCreateCourses() {
     mutationFn: createCoursesApi,
 
     onSuccess: () => {
-      toast.success("Data is being submitted. Pleas wait...!");
+      toast.success("Data is being submitted. Please wait...!");
       queryClient.invalidateQueries({
         queryKey: ["courses_applied"],
       });

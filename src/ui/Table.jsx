@@ -22,6 +22,9 @@ const CommonRow = styled.div`
   column-gap: 2.4rem;
   align-items: center;
   transition: none;
+  @media only screen and (max-width: 576px) {
+    column-gap: 0.5rem;
+  }
 `;
 
 const StyledHeader = styled(CommonRow)`
